@@ -95,8 +95,9 @@ struct BarChartView: View {
                                            height: abs(calculatedItemHeight),
                                            alignment: .center)
                                     .offset(x: CGFloat(chartOffsetValue), y: -CGFloat(calculatedItemHeight) / 2)
+                                    .opacity(animate ? 1: 0)
                                     .scaleEffect(y: animate ? 1: 0)
-                                    .animation(Animation.spring(response: 0.07 * Double(index)))
+                                    .animation(Animation.spring(response: 0.2 * Double(index + 1)).delay(0.8))
                             }
                             
                             HStack(alignment: .center) {
@@ -116,9 +117,13 @@ struct BarChartView: View {
                             .position(x: itemWidth, y: geo.calculate(desiredHeight: 1))
                             
                         }
-                        .frame(width: itemWidth * 2, alignment: .center)
+//                        .frame(width: itemWidth * 2, alignment: .center)
+                        .background(Color.pink.opacity(0.2))
                     }
-                }.zIndex(1)
+                }
+                .frame(width: geo.calculate(desiredWidth: 1), alignment: .leading)
+                .background(Color.yellow.opacity(0.2))
+                .zIndex(1)
             }
             
             // Strech to the maximum amount available to us
@@ -127,14 +132,17 @@ struct BarChartView: View {
                    alignment: .leading)
         }
         .onAppear {
-            withAnimation {
-                animate.toggle()
-            }
-        }.onTapGesture {
-            withAnimation {
-                animate.toggle()
+            if (animate == false){
+                withAnimation {
+                    animate.toggle()
+                }
             }
         }
+//        .onTapGesture {
+//            withAnimation {
+//                animate.toggle()
+//            }
+//        }
     }
     
     private func calculateItemHeight(item: DoubleChartData, max: DoubleChartData, geo: GeometryProxy) -> CGFloat {

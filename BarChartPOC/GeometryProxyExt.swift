@@ -1,8 +1,8 @@
 //
 //  GeometryProxyExt.swift
-//  BarChartPOC
+//  Finance-SwiftUI
 //
-//  Created by Yosi Mizrachi on 03/02/2021.
+//  Created by Yosi Mizrachi on 29/12/2020.
 //
 
 import Foundation
