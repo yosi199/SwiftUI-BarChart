@@ -16,6 +16,11 @@ struct BarChartView: View {
     let negativeValueColor: Color
     let textColor: Color
     
+    let chartOffsetValue: CGFloat = 30
+    let textSize: CGFloat = 10
+    
+    @State var animate = false
+    
     init(items: [DoubleChartData],
          barsLimit: Int = 0,
          numOfLineSeparators: Int = 10,
@@ -36,35 +41,38 @@ struct BarChartView: View {
         GeometryReader { geo in
             
             // get the available width we have to use
-            let availableWidth = geo.calculate(desiredWidth: 1, in: .local)
+            let availableWidth = geo.calculate(desiredWidth: 1, in: .local) - chartOffsetValue
             // we need to insert in this available space n amount of items + (n + 1) spaces between them,
             // starting with a space. and ending with a space
             // 0 1 0 1 0 1 0
             let itemWidth = availableWidth / CGFloat(((items.count * 2) + 1))
             // find the item with the maximum value
-            let max = items.max { (a, b) -> Bool in abs(a.value) < abs(b.value) }
+            let max = items.max { (a, b) -> Bool in abs(a.value) < abs(b.value) }!
             
-            let heightSlice = CGFloat(geo.calculate(desiredHeight: 1)) / CGFloat(numOfSeparators)
+            // This is the distance for the separator lines as derived from view height
+            let separatorsDistance = CGFloat(geo.calculate(desiredHeight: 1)) / CGFloat(numOfSeparators)
+            // This is the value needed to be shown on each label in the seperator lines
+            let valueForDistance = fabs(max.value) / Double(numOfSeparators / 2)
             
             ZStack {
                 
                 // Line separators
                 ForEach(0..<numOfSeparators + 1) { index in
                     ZStack {
+                        // Separator line
                         Rectangle()
                             .foregroundColor(separatorColor)
                             .frame(width: geo.calculate(desiredWidth: 1, in: .local), height: 1, alignment: .center)
-                            .position(x: geo.calculate(desiredWidth: 1, in: .local) / 2, y: heightSlice * CGFloat(index))
+                            .position(x: (geo.calculate(desiredWidth: 1, in: .local) / 2) + chartOffsetValue, y: separatorsDistance * CGFloat(index))
                         
-                        
-                        let value = Double(heightSlice * CGFloat(index)).decimalPlacesString(places: 2)
-                        
-                        Text("\(value)")
+                        // Separator text
+                        let value = fabs(max.value) - (Double(index) * valueForDistance)
+                        Text("\(value.decimalPlacesString(places: 2))%")
                             .multilineTextAlignment(.center)
                             .foregroundColor(textColor)
-                            .font(.system(size: 8))
+                            .font(.system(size: textSize))
                             .frame(width: geo.calculate(desiredWidth: 1, in: .local), alignment: .leading)
-                            .position(x: geo.calculate(desiredWidth: 1, in: .local) / 2, y: heightSlice * CGFloat(index))
+                            .position(x: geo.calculate(desiredWidth: 1, in: .local) / 2, y: separatorsDistance * CGFloat(index))
                     }
                 }
                 
@@ -73,7 +81,7 @@ struct BarChartView: View {
                     ForEach(items.indices, id: \.self) { index in
                         
                         let item = items[index]
-                        let calculatedItemHeight = calculateItemHeight(item: item, max: max!, geo: geo)
+                        let calculatedItemHeight = calculateItemHeight(item: item, max: max, geo: geo)
                         
                         ZStack {
                             HStack {
@@ -86,7 +94,9 @@ struct BarChartView: View {
                                     .frame(width: itemWidth,
                                            height: abs(calculatedItemHeight),
                                            alignment: .center)
-                                    .offset(y: -CGFloat(calculatedItemHeight) / 2)
+                                    .offset(x: CGFloat(chartOffsetValue), y: -CGFloat(calculatedItemHeight) / 2)
+                                    .scaleEffect(y: animate ? 1: 0)
+                                    .animation(Animation.spring(response: 0.07 * Double(index)))
                             }
                             
                             HStack(alignment: .center) {
@@ -96,23 +106,34 @@ struct BarChartView: View {
                                 Text(item.timestamp.getFormattedDate(format: "MM/dd"))
                                     .multilineTextAlignment(.center)
                                     .foregroundColor(textColor)
-                                    .font(.system(size: 8))
+                                    .font(.system(size: textSize))
                                     .rotationEffect(.degrees(45))
                                     .fixedSize(horizontal: true, vertical: false)
                                     .frame(width: itemWidth * 2, height: 100, alignment: .center)
+                                    .offset(x: chartOffsetValue)
                                     .background(Color.clear)
                             }
-                            .position(x: itemWidth, y: geo.calculate(desiredHeight: 1) - 25)
+                            .position(x: itemWidth, y: geo.calculate(desiredHeight: 1))
                             
                         }
                         .frame(width: itemWidth * 2, alignment: .center)
                     }
                 }.zIndex(1)
             }
+            
             // Strech to the maximum amount available to us
-//            .frame(width: geo.calculate(desiredWidth: 1, in: .local),
-//                   height: geo.calculate(desiredHeight: 1, in: .local),
-//                   alignment: .leading)
+            .frame(width: geo.calculate(desiredWidth: 1, in: .local) - 100,
+                   height: geo.calculate(desiredHeight: 1, in: .local),
+                   alignment: .leading)
+        }
+        .onAppear {
+            withAnimation {
+                animate.toggle()
+            }
+        }.onTapGesture {
+            withAnimation {
+                animate.toggle()
+            }
         }
     }
     

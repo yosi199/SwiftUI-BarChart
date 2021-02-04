@@ -12,12 +12,13 @@ struct ContentView: View {
         GeometryReader { geo in
             HStack(alignment: .center) {
                 VStack(alignment: .center) {
-                    Spacer()
                     BarChartView(items: arr, barsLimit: 31)
-                        .frame(width: geo.calculate(desiredWidth: 1, in: .local), height: 250, alignment: .center)
-//                        .background(Color.red.opacity(0.2))
+                        .frame(width: geo.calculate(desiredWidth: 1, in: .local),
+                               height: geo.calculate(desiredHeight: 1),
+                               alignment: .center)
                 }
             }
+            
         }
     }
 }
