@@ -9,8 +9,16 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        GeometryReader { geo in
+            HStack(alignment: .center) {
+                VStack(alignment: .center) {
+                    Spacer()
+                    BarChartView(items: arr, barsLimit: 31)
+                        .frame(width: geo.calculate(desiredWidth: 1, in: .local), height: 250, alignment: .center)
+//                        .background(Color.red.opacity(0.2))
+                }
+            }
+        }
     }
 }
 
