@@ -13,13 +13,16 @@
 		D32FB53625CAF820007B8BCD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D32FB53525CAF820007B8BCD /* Preview Assets.xcassets */; };
 		D32FB53F25CAF836007B8BCD /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32FB53E25CAF836007B8BCD /* TestData.swift */; };
 		D390AD8925CC477E00E217C6 /* SwiftUIChartsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D390AD8825CC477E00E217C6 /* SwiftUIChartsTests.swift */; };
-		D3CC681825CC7E3B00005C7B /* BarChartWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC681725CC7E3B00005C7B /* BarChartWrapper.swift */; };
+		D3ACB20E25DD15AF00A85823 /* GraphChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ACB20D25DD15AF00A85823 /* GraphChartView.swift */; };
+		D3ACB21125DD18FC00A85823 /* GraphChartShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ACB21025DD18FC00A85823 /* GraphChartShape.swift */; };
 		D3CC681E25CC7E5C00005C7B /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC681B25CC7E5C00005C7B /* ChartData.swift */; };
 		D3CC681F25CC7E5C00005C7B /* BarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC681C25CC7E5C00005C7B /* BarChartView.swift */; };
 		D3CC682025CC7E5C00005C7B /* DoubleChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC681D25CC7E5C00005C7B /* DoubleChartData.swift */; };
 		D3CC682625CC7EC200005C7B /* DoubleExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC682425CC7EC200005C7B /* DoubleExt.swift */; };
 		D3CC682725CC7EC200005C7B /* GeometryProxyExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC682525CC7EC200005C7B /* GeometryProxyExt.swift */; };
 		D3CC682A25CC7EEE00005C7B /* DateExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3CC682925CC7EEE00005C7B /* DateExt.swift */; };
+		D3FEADAF25E247BE006D735C /* GraphPointsChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FEADAE25E247BE006D735C /* GraphPointsChart.swift */; };
+		D3FEADB225E25587006D735C /* OperationOrchestrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FEADB125E25587006D735C /* OperationOrchestrator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,13 +59,16 @@
 		D390AD8125CC477E00E217C6 /* SwiftUIChartsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftUIChartsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D390AD8825CC477E00E217C6 /* SwiftUIChartsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIChartsTests.swift; sourceTree = "<group>"; };
 		D390AD8A25CC477E00E217C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D3CC681725CC7E3B00005C7B /* BarChartWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartWrapper.swift; sourceTree = "<group>"; };
+		D3ACB20D25DD15AF00A85823 /* GraphChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphChartView.swift; sourceTree = "<group>"; };
+		D3ACB21025DD18FC00A85823 /* GraphChartShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphChartShape.swift; sourceTree = "<group>"; };
 		D3CC681B25CC7E5C00005C7B /* ChartData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
 		D3CC681C25CC7E5C00005C7B /* BarChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartView.swift; sourceTree = "<group>"; };
 		D3CC681D25CC7E5C00005C7B /* DoubleChartData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleChartData.swift; sourceTree = "<group>"; };
 		D3CC682425CC7EC200005C7B /* DoubleExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DoubleExt.swift; sourceTree = "<group>"; };
 		D3CC682525CC7EC200005C7B /* GeometryProxyExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeometryProxyExt.swift; sourceTree = "<group>"; };
 		D3CC682925CC7EEE00005C7B /* DateExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateExt.swift; sourceTree = "<group>"; };
+		D3FEADAE25E247BE006D735C /* GraphPointsChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphPointsChart.swift; sourceTree = "<group>"; };
+		D3FEADB125E25587006D735C /* OperationOrchestrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationOrchestrator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,19 +110,17 @@
 		D32FB52D25CAF81F007B8BCD /* BarChartPOC */ = {
 			isa = PBXGroup;
 			children = (
-				D3CC682925CC7EEE00005C7B /* DateExt.swift */,
-				D3CC682425CC7EC200005C7B /* DoubleExt.swift */,
-				D3CC682525CC7EC200005C7B /* GeometryProxyExt.swift */,
-				D3CC681C25CC7E5C00005C7B /* BarChartView.swift */,
-				D3CC681B25CC7E5C00005C7B /* ChartData.swift */,
-				D3CC681D25CC7E5C00005C7B /* DoubleChartData.swift */,
-				D3CC681725CC7E3B00005C7B /* BarChartWrapper.swift */,
+				D3ACB20C25DD158B00A85823 /* GraphChart */,
+				D3ACB20925DD155A00A85823 /* Data */,
+				D3ACB20825DD153C00A85823 /* Extensions */,
+				D3ACB20725DD153000A85823 /* BarChart */,
 				D32FB52E25CAF81F007B8BCD /* BarChartPOCApp.swift */,
 				D32FB53025CAF81F007B8BCD /* ContentView.swift */,
 				D32FB53225CAF820007B8BCD /* Assets.xcassets */,
 				D32FB53725CAF820007B8BCD /* Info.plist */,
 				D32FB53425CAF820007B8BCD /* Preview Content */,
 				D32FB53E25CAF836007B8BCD /* TestData.swift */,
+				D3FEADB125E25587006D735C /* OperationOrchestrator.swift */,
 			);
 			path = BarChartPOC;
 			sourceTree = "<group>";
@@ -136,6 +140,43 @@
 				D390AD8A25CC477E00E217C6 /* Info.plist */,
 			);
 			path = SwiftUIChartsTests;
+			sourceTree = "<group>";
+		};
+		D3ACB20725DD153000A85823 /* BarChart */ = {
+			isa = PBXGroup;
+			children = (
+				D3CC681C25CC7E5C00005C7B /* BarChartView.swift */,
+			);
+			path = BarChart;
+			sourceTree = "<group>";
+		};
+		D3ACB20825DD153C00A85823 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D3CC682925CC7EEE00005C7B /* DateExt.swift */,
+				D3CC682425CC7EC200005C7B /* DoubleExt.swift */,
+				D3CC682525CC7EC200005C7B /* GeometryProxyExt.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D3ACB20925DD155A00A85823 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D3CC681B25CC7E5C00005C7B /* ChartData.swift */,
+				D3CC681D25CC7E5C00005C7B /* DoubleChartData.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		D3ACB20C25DD158B00A85823 /* GraphChart */ = {
+			isa = PBXGroup;
+			children = (
+				D3ACB20D25DD15AF00A85823 /* GraphChartView.swift */,
+				D3ACB21025DD18FC00A85823 /* GraphChartShape.swift */,
+				D3FEADAE25E247BE006D735C /* GraphPointsChart.swift */,
+			);
+			path = GraphChart;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,12 +279,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3CC681825CC7E3B00005C7B /* BarChartWrapper.swift in Sources */,
+				D3ACB20E25DD15AF00A85823 /* GraphChartView.swift in Sources */,
 				D3CC681E25CC7E5C00005C7B /* ChartData.swift in Sources */,
 				D32FB53F25CAF836007B8BCD /* TestData.swift in Sources */,
 				D32FB53125CAF81F007B8BCD /* ContentView.swift in Sources */,
+				D3ACB21125DD18FC00A85823 /* GraphChartShape.swift in Sources */,
 				D32FB52F25CAF81F007B8BCD /* BarChartPOCApp.swift in Sources */,
+				D3FEADAF25E247BE006D735C /* GraphPointsChart.swift in Sources */,
 				D3CC682725CC7EC200005C7B /* GeometryProxyExt.swift in Sources */,
+				D3FEADB225E25587006D735C /* OperationOrchestrator.swift in Sources */,
 				D3CC681F25CC7E5C00005C7B /* BarChartView.swift in Sources */,
 				D3CC682A25CC7EEE00005C7B /* DateExt.swift in Sources */,
 				D3CC682625CC7EC200005C7B /* DoubleExt.swift in Sources */,
