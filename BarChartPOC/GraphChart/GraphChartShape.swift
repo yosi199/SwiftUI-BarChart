@@ -14,18 +14,26 @@ struct GraphChartShape: Shape {
     let geometryProxy: GeometryProxy
     let sizePadding: CGFloat = 20
     
-    var items: [DoubleChartData]
+    let items: [DrawableInfoChartData]
+    let max: DrawableInfoChartData
+
     var count: Double = 0
     var opacity: Double =  0.0
-    var dragValue: DragGesture.Value? = nil
+    var distanceBetweenDataPoints: CGFloat = 0
     
-    init(geometryProxy: GeometryProxy, items: [DoubleChartData], dragValue: DragGesture.Value?, orchestrator: OperationOrchestrator) {
+    init(geometryProxy: GeometryProxy,
+         items: [DrawableInfoChartData],
+         max: DrawableInfoChartData,
+         distanceBetweenDataPoints: CGFloat,
+         orchestrator: OperationOrchestrator) {
+        
         self.geometryProxy = geometryProxy
         self.items = items
+        self.max = max
         self.count = Double(items.count)
-        self.dragValue = dragValue
         self.orchestrator = orchestrator
         self.orchestrator.index = 0
+        self.distanceBetweenDataPoints = distanceBetweenDataPoints
     }
     
     var animatableData: AnimatablePair<Double, Double> {
@@ -40,40 +48,22 @@ struct GraphChartShape: Shape {
         var path = Path()
         
         if (!items.isEmpty) {
-            let dataPointsCount = items.count
-            let distanceBetweenDataPoints = (rect.maxX - (sizePadding * 2)) / CGFloat(dataPointsCount)
-            // find the item with the maximum value
-            let max = items.max { (a, b) -> Bool in abs(a.value) < abs(b.value) }!
             
             for index in 0..<Int(count) {
                 let item = items[index]
-                let dataPointHeight = calculateItemHeight(item: item, max: max, rect: rect)
                 let xPos = CGFloat(index) * distanceBetweenDataPoints + sizePadding
+                
                 if (index == 0) {
-                    path.move(to: CGPoint(x: xPos, y: rect.midY - dataPointHeight))
+                    path.move(to: CGPoint(x: xPos, y: rect.midY - item.itemYPosition))
                 } else {
-                    path.addLine(to: CGPoint(x: xPos, y: rect.midY - dataPointHeight))
+                    path.addLine(to: CGPoint(x: xPos, y: rect.midY - item.itemYPosition))
                 }
                 
                 orchestrator.index += 1
-                
-//                guard let dragLocation =
-//                if (abs(xPos - (dragValue?.location.x)!) < 3) {
-//                    print("Found")
-//                }
-            
             }
         }
         
         return path
     }
-    
-    private func calculateItemHeight(item: DoubleChartData, max: DoubleChartData, rect: CGRect) -> CGFloat {
-        let maximumAbsoluteValue = abs(max.value)
-        let result = ((CGFloat(item.value)) / CGFloat(maximumAbsoluteValue)) * rect.size.height
-        #if DEBUG
-        print("Result for original value of \(item.value) when max is \(maximumAbsoluteValue) and height is \(rect.size.height) is \(result)")
-        #endif
-        return result / 2
-    }
+
 }

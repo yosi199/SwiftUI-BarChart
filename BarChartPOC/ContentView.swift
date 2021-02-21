@@ -11,6 +11,10 @@ struct ContentView: View {
         
     var body: some View {
         GeometryReader { geo in
+            let gradient = LinearGradient(gradient: Gradient(colors: [.red, .orange]),
+                                          startPoint: .topLeading,
+                                          endPoint: .bottomTrailing)
+            
             HStack(alignment: .center) {
                 VStack(alignment: .center) {
                     Spacer()
@@ -33,6 +37,7 @@ struct ContentView: View {
                     Spacer()
                 }
             }
+            .background(gradient)
             
         }
     }
