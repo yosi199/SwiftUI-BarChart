@@ -14,26 +14,20 @@ struct GraphChartShape: Shape {
     let geometryProxy: GeometryProxy
     let sizePadding: CGFloat = 20
     
-    let items: [DrawableInfoChartData]
-    let max: DrawableInfoChartData
-
+    let bundle: DataBundle
+    
     var count: Double = 0
     var opacity: Double =  0.0
-    var distanceBetweenDataPoints: CGFloat = 0
     
     init(geometryProxy: GeometryProxy,
-         items: [DrawableInfoChartData],
-         max: DrawableInfoChartData,
-         distanceBetweenDataPoints: CGFloat,
+         bundle: DataBundle,
          orchestrator: OperationOrchestrator) {
         
+        self.bundle = bundle
         self.geometryProxy = geometryProxy
-        self.items = items
-        self.max = max
-        self.count = Double(items.count)
+        self.count = Double(bundle.items.count)
         self.orchestrator = orchestrator
         self.orchestrator.index = 0
-        self.distanceBetweenDataPoints = distanceBetweenDataPoints
     }
     
     var animatableData: AnimatablePair<Double, Double> {
@@ -47,23 +41,21 @@ struct GraphChartShape: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
         
-        if (!items.isEmpty) {
+//        let _ = print("Called GraphChartShape. Items Count: \(count)")
+        
+        for index in 0..<Int(count) {
             
-            for index in 0..<Int(count) {
-                let item = items[index]
-                let xPos = CGFloat(index) * distanceBetweenDataPoints + sizePadding
-                
-                if (index == 0) {
-                    path.move(to: CGPoint(x: xPos, y: rect.midY - item.itemYPosition))
-                } else {
-                    path.addLine(to: CGPoint(x: xPos, y: rect.midY - item.itemYPosition))
-                }
-                
-                orchestrator.index += 1
+            let item = bundle.items[index]
+            if (index == 0) {
+                path.move(to: CGPoint(x: item.xPosition, y: rect.midY - item.yPosition))
+            } else {
+                path.addLine(to: CGPoint(x: item.xPosition, y: rect.midY - item.yPosition))
             }
+            
+            orchestrator.index += 1
         }
         
         return path
     }
-
+    
 }

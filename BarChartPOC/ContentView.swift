@@ -27,8 +27,8 @@ struct ContentView: View {
                     //                        .position(x: geo.calculate(desiredWidth: 0.5),
                     //                                  y: geo.calculate(desiredHeight: 1) / 2)
                     
-                    GraphChartView(items: arr)
-                        .frame(width: geo.calculate(desiredWidth: 0.8, in: .local),
+                    GraphChartView(items: arr, barsLimit: 7)
+                        .frame(width: geo.calculate(desiredWidth: 0.9, in: .local),
                                height: geo.calculate(desiredHeight: 0.6),
                                alignment: .center)
                         .position(x: geo.calculate(desiredWidth: 0.5),
@@ -38,7 +38,6 @@ struct ContentView: View {
                 }
             }
             .background(gradient)
-            
         }
     }
 }

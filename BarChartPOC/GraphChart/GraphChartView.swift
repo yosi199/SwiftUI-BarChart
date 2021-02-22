@@ -19,31 +19,14 @@ struct GraphChartView: View {
     @State var opacity = 0.0
     @State var trim = 0.0
     
+    @State var bundle = DataBundle()
+    
     var body: some View {
         ZStack {
             GeometryReader { geo in
-                // Trim the items to the amount that was passed in.
-                let trimmedItems = items.suffix(barsLimit == 0 ? items.count : barsLimit) as Array<DoubleChartData>
-                
-                // Calculate distance between each point
-                let distance = (geo.size.width - (sizePadding * 2)) / CGFloat(trimmedItems.count)
-                
-                // Find the item with the maximum value
-                let max = trimmedItems.max { (a, b) -> Bool in abs(a.value) < abs(b.value) }!
-                let maxManipulated = DrawableInfoChartData(item: max, itemYPosition: calculateItemHeight(item: max, max: max, geo: geo))
-                
-                // Find the height of 'max' so we know what is our maximum height inside this container
-                let maxHeightWithinBounds = calculateItemHeight(item: max, max: max, geo: geo)
-                
-                // Pack all the calculated data into a new collection. The goal here is to do calculation pre-render so we
-                // will be more efficent.
-                let manipulatedData = trimmedItems.map({DrawableInfoChartData(item: $0, itemYPosition: calculateItemHeight(item: $0, max: max, geo: geo))})
-                
-                
+
                 GraphChartShape(geometryProxy: geo,
-                                items: showItems ? manipulatedData : [],
-                                max: maxManipulated,
-                                distanceBetweenDataPoints: distance,
+                                bundle: bundle,
                                 orchestrator: operationOrchestrator)
                     .trim(from: 0, to: CGFloat(trim))
                     .stroke(Color.white, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .bevel))
@@ -51,24 +34,54 @@ struct GraphChartView: View {
                     .animation(.linear(duration: 0.5))
                 
                 GraphPointsChart(geometryProxy: geo,
-                                 distanceBetweenDataPoints: distance,
-                                 items: manipulatedData,
-                                 color: .white)
+                                 bundle: bundle,
+                                 color: .white,
+                                 enabled: showItems)
                     .frame(width: geo.calculate(desiredWidth: 1, in: .local),
                            height: geo.calculate(desiredHeight: 1),
                            alignment: .center)
                     .zIndex(1)
                     .environmentObject(operationOrchestrator)
                 
-                IndicatorView(items: manipulatedData,
-                              maxHeightWithinBounds: maxHeightWithinBounds,
-                              maxItem: max,
-                              distanceBetweenDataPoints: distance)
+                IndicatorView(bundle: bundle)
                     .zIndex(2)
                     .frame(width: geo.calculate(desiredWidth: 1), height: geo.calculate(desiredHeight: 1), alignment: .center)
                 
                 
                 Button("Press") {
+                    
+                    bundle = DataBundle()
+                    
+                    // Trim the items to the amount that was passed in.
+                    let trimmedItems = items.suffix(barsLimit == 0 ? items.count : barsLimit) as Array<DoubleChartData>
+                    
+                    // Calculate distance between each point
+                    let distance = (geo.size.width) / CGFloat(trimmedItems.count - 1)
+                    
+                    //                    // Find the item with the maximum value
+                    let max = trimmedItems.max { (a, b) -> Bool in abs(a.value) < abs(b.value) }!
+                    
+                    
+                    bundle.distanceBetweenItems = distance
+                    bundle.maxHeightWithinBounds = calculateItemHeight(item: max, max: max, geo: geo)
+                    
+                    for index in 0..<trimmedItems.count {
+                        let item = trimmedItems[index]
+                        
+                        var bundleItem = DrawableInfoChartData()
+                        
+                        bundleItem.data = item
+                        bundleItem.xPosition = CGFloat(index) * distance
+                        bundleItem.yPosition = calculateItemHeight(item: item, max: max, geo: geo)
+                        
+                        // Set max in the bundle
+                        if (item.value == max.value) {
+                            bundle.maxItem = bundleItem
+                        }
+                        
+                        bundle.items.append(bundleItem)
+                    }
+                    
                     showItems.toggle()
                     opacity = showItems ? 0.5 : 0.0
                     trim = showItems ? 1.0  : 0.0
@@ -88,7 +101,25 @@ struct GraphChartView: View {
     }
 }
 
-struct DrawableInfoChartData {
-    let item: DoubleChartData
-    let itemYPosition: CGFloat
+struct DataBundle {
+    // items
+    var items: [DrawableInfoChartData] = []
+    var maxItem: DrawableInfoChartData = DrawableInfoChartData()
+    // measurements
+    var distanceBetweenItems: CGFloat = 0.0
+    var maxHeightWithinBounds: CGFloat = 0.0
+    
+}
+
+struct DrawableInfoChartData: Identifiable, Equatable {
+    let id = UUID()
+    
+    
+    var data: DoubleChartData = DoubleChartData(timestamp: Date(),value: 0)
+    var yPosition: CGFloat = 0.0
+    var xPosition: CGFloat = 0.0
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.id == rhs.id
+    }
 }

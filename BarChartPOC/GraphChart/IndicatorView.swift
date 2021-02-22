@@ -9,11 +9,8 @@ import SwiftUI
 
 struct IndicatorView: View {
     
-    let items: [DrawableInfoChartData]
-    let maxHeightWithinBounds: CGFloat
-    let maxItem: DoubleChartData
+    let bundle: DataBundle
     
-    var distanceBetweenDataPoints: CGFloat = 0
     var sidePadding: CGFloat = 20
     
     @State var dragValue: DragGesture.Value!
@@ -32,13 +29,13 @@ struct IndicatorView: View {
                     DragIndicator(dragValue: dragValue,
                                   dragging: dragging,
                                   padding: sidePadding,
-                                  distanceBetweenDataPoints: distanceBetweenDataPoints)
+                                  distanceBetweenDataPoints: bundle.distanceBetweenItems)
                 }
                 
                 LabelIndicator(match: match,
                                xPos: xPosition,
                                yPos: yPosition,
-                               max: maxHeightWithinBounds,
+                               max: bundle.maxHeightWithinBounds,
                                labelValue: labelValue,
                                sidePadding: sidePadding)
             }
@@ -50,14 +47,15 @@ struct IndicatorView: View {
     }
     
     private func onChange(value: DragGesture.Value, geo: GeometryProxy) {
-        items.indices.forEach { index in
-            let xPos = CGFloat(index) * distanceBetweenDataPoints + sidePadding
+        bundle.items.indices.forEach { index in
+            let item = bundle.items[index]
+            let xPos = item.xPosition
             let delta = abs(value.location.x - xPos)
             if (delta < 4) {
                 match = true
                 xPosition = xPos
-                yPosition = items[index].itemYPosition
-                labelValue = CGFloat(items[index].item.value)
+                yPosition = item.yPosition
+                labelValue = CGFloat(item.data.value)
             }
         }
         dragValue = value
@@ -141,7 +139,7 @@ struct DragIndicator: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                let x = dragValue.location.x.clamped(to: 0 + padding...geo.calculate(desiredWidth: 1) - padding - distanceBetweenDataPoints)
+                let x = dragValue.location.x.clamped(to: 0...geo.calculate(desiredWidth: 1))
                 Rectangle()
                     .frame(width: width, height: geo.size.height, alignment: .center)
                     .foregroundColor(Color.white.opacity(0.5))

@@ -8,38 +8,59 @@
 import SwiftUI
 
 struct GraphPointsChart: View {
-    
-    @State var opacity: Double = 0
-    @EnvironmentObject var orechastrator: OperationOrchestrator
-    
+        
     let geometryProxy: GeometryProxy
     let sizePadding: CGFloat = 20
-    let distanceBetweenDataPoints: CGFloat
-
-    var items: [DrawableInfoChartData]
-    var count: Double = 0
-
+    
+    let bundle: DataBundle
+    
     var color: Color = Color.blue
     var circleSize: CGFloat = 8
-        
+    var enabled = false
+    
     var body: some View {
-        ZStack{
-            if (!items.isEmpty) {
+        ZStack {
+            
+            ForEach(0..<(enabled ? bundle.items.count : 0) , id: \.self) { index in
                 
-                ForEach(0..<items.count) { index in
-                    
-                    let item = items[index]
-        
-                    let xPos = CGFloat(index) * distanceBetweenDataPoints + sizePadding
-                    Circle()
-                        .frame(width: circleSize, height: circleSize, alignment: .center)
-                        .foregroundColor(color)
-                        .scaleEffect(x: orechastrator.index >  index ? 1: 0.01, y: orechastrator.index >  index ? 1: 0.01)
-                        .opacity(orechastrator.index >  index ? 1 : 0)
-                        .position(x: xPos, y: geometryProxy.getCenterHeight() - item.itemYPosition)
-                        .animation(.spring(response: 0.05 * Double(index)))
-                }
+                let item = bundle.items[index]
+                
+                Dot(enabled: enabled,
+                    delayMultiplier: index,
+                    color: color,
+                    item: item,
+                    geometryProxy: geometryProxy)
             }
         }
+    }
+}
+
+struct Dot: View {
+    
+    var enabled = false
+    
+    @State var opacity: Double = 0.01
+    
+    var delayMultiplier: Int
+    var color: Color = Color.blue
+    var circleSize: CGFloat = 8
+    var item: DrawableInfoChartData
+    var geometryProxy: GeometryProxy
+    
+    var body: some View {
+        
+        Circle()
+            .frame(width: circleSize, height: circleSize, alignment: .center)
+            .foregroundColor(color)
+            .scaleEffect(x: CGFloat(opacity), y: CGFloat(opacity))
+            .opacity(opacity)
+            .position(x: item.xPosition, y: geometryProxy.getCenterHeight() - item.yPosition)
+            .onAppear {
+                let animationValue = 0.02 * Double(delayMultiplier)
+                withAnimation(.easeIn(duration: animationValue)) {
+                    opacity = enabled ? 1 : 0.01
+                    let _ = print(opacity)
+                }
+            }
     }
 }

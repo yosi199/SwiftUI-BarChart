@@ -7,10 +7,14 @@
 
 import Foundation
 
-struct DoubleChartData: ChartData {
+struct DoubleChartData: ChartData, Identifiable, Equatable, Hashable { 
     typealias T = Double
 
     let id = UUID()
     let timestamp: Date
     let value: Double
+    
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.id == rhs.id
+    }
 }
